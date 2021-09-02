@@ -1,0 +1,1 @@
+__all__ = ['group_switch', 'auto', 'repeat', 'setu', 'blacklist', 'man', 'ordersong', 'nudgefunc']    # 将插件名卸载列表里面
