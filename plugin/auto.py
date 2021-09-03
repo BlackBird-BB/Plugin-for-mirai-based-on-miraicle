@@ -2,8 +2,6 @@ import miraicle
 import requests
 import json
 
-r18 = 0    
-
 @miraicle.Mirai.receiver('FriendMessage')
 def hello_to_friend(bot: miraicle.Mirai, msg: miraicle.FriendMessage):
     bot.send_friend_msg(qq=msg.sender, msg='Hello world!')
