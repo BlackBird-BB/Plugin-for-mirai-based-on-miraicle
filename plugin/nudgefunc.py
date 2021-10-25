@@ -18,6 +18,7 @@ def get_dmoe():
             return response.json()['imgurl']
 
 @miraicle.Mirai.receiver('NudgeEvent')
+# 戳一戳
 def nudge_handler(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
     dmoe = get_dmoe()
     yiyan = get_yiyan()
