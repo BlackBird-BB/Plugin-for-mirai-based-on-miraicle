@@ -5,6 +5,7 @@ import json
 r18 = {}
 
 @miraicle.Mirai.receiver("GroupMessage")
+@miraicle.Mirai.receiver("FriendMessage")
 def setu(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
     if msg.plain[:8] == 'set r18 ' and msg.sender == 602198790:
         if msg.group not in r18.keys():
@@ -31,3 +32,25 @@ def setu(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
         else:
             data = f"标题：{res['data'][0]['title']}\nUID: {res['data'][0]['uid']}\n作者: {res['data'][0]['author']}\ntags: {res['data'][0]['tags']}\n"
             bot.send_group_msg(group=msg.group, msg=[miraicle.Plain(data),miraicle.Image.from_url(res['data'][0]['urls']['original'])], quote=msg.id)
+
+
+@miraicle.Mirai.receiver("GroupMessage")
+@miraicle.Mirai.receiver("FriendMessage")
+def joke(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
+    if msg.plain == '讲个笑话':
+        # 讲笑话
+        res = requests.post("https://api.vvhan.com/api/xh?type=json")
+        res = json.loads(res.text)
+        bot.send_group_msg(group=msg.group, msg=res['joke'])
+
+
+@miraicle.Mirai.receiver("GroupMessage")
+@miraicle.Mirai.receiver("FriendMessage")
+def ai(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
+    if "2441825920" in msg.text:
+        # 人工智障
+        response = requests.get(
+            "http://api.qingyunke.com/api.php?key=free&appid=0&msg="+msg.plain)
+        rel = json.loads(response.text)
+        rel = rel['content']
+        bot.send_group_msg(group=msg.group, msg=rel)
