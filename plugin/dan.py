@@ -3,6 +3,8 @@ import requests
 import datetime
 import json
 
+from nudgefunc import get_yiyan, get_dmoe
+
 group_list = [975952062, 679371905]
 friend_list = [602198790, 1320896465, 2446770095, 2363157552]
 
@@ -28,29 +30,22 @@ def jinrishici():
         data = data + "\n〖翻译〗\n"+tra
     return data
 
-
-def meirigeyan():
-    response = requests.get(url="http://open.iciba.com/disapi")
-    rel = json.loads(response.text)
-    data = f"●今日格言\n{rel['note']}\n{rel['content']}"
-    return data, rel['fenxiang_img']
-
-
-
 @miraicle.scheduled_job(miraicle.Scheduler.every().day.at('7:30'))
 def morning(bot: miraicle.Mirai):
     now = datetime.datetime.now()
     time = now.strftime("%Y年%m月%d日")
     
-    data, img = meirigeyan()
-    data = "早安，"+time+"\n\n"+data
-    rep = [miraicle.Plain(data),
-            miraicle.Image.from_url(img)]
+    dmoe = get_dmoe()
+    yiyan = get_yiyan()
+    
+    data = "早安，"+time+"\n\n"+yiyan
+    reply = [miraicle.Plain(data),
+             miraicle.Image.from_url(dmoe)]
 
     for i in group_list: 
-        bot.send_group_msg(group=i, msg=rep)
+        bot.send_group_msg(group=i, msg=reply)
     for i in friend_list:
-        bot.send_friend_msg(qq=i, msg=rep)
+        bot.send_friend_msg(qq=i, msg=reply)
 
 
 @miraicle.scheduled_job(miraicle.Scheduler.every().day.at('23:30'))

@@ -22,9 +22,21 @@ def get_dmoe():
 def nudge_handler(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
     dmoe = get_dmoe()
     yiyan = get_yiyan()
-    bot.send_group_msg(group=msg['subject']['id'], msg=[miraicle.At(qq=msg['fromId']),
-                                                        miraicle.Plain("\n"+yiyan),
-                                                        miraicle.Image.from_url(dmoe)])
+    reply = [miraicle.At(qq=msg['fromId']),
+             miraicle.Plain("\n"+yiyan),
+             miraicle.Image.from_url(dmoe)]
+    bot.send_group_msg(group=msg['subject']['id'], msg=reply)
+
+
+@miraicle.Mirai.receiver('FriendMessage')
+def ChuoYiChuo(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
+    if msg.plain == '[Poke:ChuoYiChuo]':
+        dmoe = get_dmoe()
+        yiyan = get_yiyan()
+        reply = [miraicle.Plain("\n"+yiyan),
+                    miraicle.Image.from_url(dmoe)]
+        bot.send_friend_msg(qq=msg.sender, msg=reply)
+
     '''
     a   动画
     b	漫画

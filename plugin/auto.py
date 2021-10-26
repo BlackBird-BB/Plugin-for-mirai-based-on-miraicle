@@ -1,8 +1,8 @@
 import miraicle
 
-@miraicle.Mirai.receiver('FriendMessage')
-def hello_to_friend(bot: miraicle.Mirai, msg: miraicle.FriendMessage):
-    bot.send_friend_msg(qq=msg.sender, msg='Hello world!')
+# @miraicle.Mirai.receiver('FriendMessage')
+# def hello_to_friend(bot: miraicle.Mirai, msg: miraicle.FriendMessage):
+#     bot.send_friend_msg(qq=msg.sender, msg='Hello world!')
 
 
 @miraicle.Mirai.receiver('GroupMessage')

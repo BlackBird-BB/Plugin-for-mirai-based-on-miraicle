@@ -20,6 +20,7 @@ def search_song(name, stype=1, offset=0, total='true', limit=60):
 
 
 @miraicle.Mirai.receiver('GroupMessage')
+@miraicle.Mirai.receiver("FriendMessage")
 def group_switch(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
     if msg.text[:3] == "点歌 ":
         music_name = msg.text[3:]
