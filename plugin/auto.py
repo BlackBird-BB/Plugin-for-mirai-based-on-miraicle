@@ -16,8 +16,9 @@ def hello_to_group(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
         
     elif msg.plain == '草':
         # 草，图片回复
+        # callback = [miraicle.Image.from_file('/home/blackbird/mcl/python_miraicle/data/cao.jpg')]
         callback = [miraicle.Image.from_file(
-            '/home/blackbird/mcl/python_miraicle/data/cao.jpg')]
+            "/home/git/bot/Plugin-for-mirai-based-on-miraicle/data/cao.jpg")]
     elif msg.plain == '麻了':
         # 麻了，是全麻么？
         callback = '是全麻嘛？'

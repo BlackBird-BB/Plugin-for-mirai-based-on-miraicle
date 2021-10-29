@@ -1,9 +1,19 @@
 import miraicle
+from miraicle.mirai import Mirai
 import requests
 import json
+import time
+import os
 
 r18_g = {}
 r18_p = {}
+
+def get_img(url):
+    name = "/home/git/bot/Plugin-for-mirai-based-on-miraicle/data/setu/" + \
+        str(time.time()).replace(".", "_")+".jpg"
+    os.system(
+        f'''proxychains curl {url} --output {name}''')
+    return name
 
 @miraicle.Mirai.receiver("FriendMessage")
 def setu_p(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
@@ -14,6 +24,7 @@ def setu_p(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
         opt = int(msg.plain.split()[2])
         r18_p[tar] = opt
     elif msg.plain[:2] == '色图':
+        print("[setu] Started")
         if msg.sender not in r18_p.keys():
             r18_p[msg.sender] = 0
         tag = msg.plain[3:].split()
@@ -24,23 +35,25 @@ def setu_p(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
         res = requests.post(
             url="https://api.lolicon.app/setu/v2", json=content).json()
         if len(res['data']) == 0:
-            bot.send_friend_msg(group=msg.sender, msg=[miraicle.Plain(
+            bot.send_friend_msg(qq=msg.sender, msg=[miraicle.Plain(
                 "这个标签没找到色色的图片欸~(用英语或者换个标签吧)"), miraicle.Face.from_face_id(176)])
-            bot.send_friend_msg(group=msg.group, msg=[miraicle.Plain("什么？你非要冲？？？"), miraicle.Face.from_face_id(
+            bot.send_friend_msg(qq=msg.group, msg=[miraicle.Plain("什么？你非要冲？？？"), miraicle.Face.from_face_id(
                 104), miraicle.Plain("那满足你吧"), miraicle.Face.from_face_id(101)])
             content = {'r18': r18_p[msg.sender], 'tag': []}
             res = requests.post(
                 url="https://api.lolicon.app/setu/v2", json=content).json()
-            data = f"标题：{res['data'][0]['title']}\nUID: {res['data'][0]['uid']}\n作者: {res['data'][0]['author']}\ntags: {res['data'][0]['tags']}\n"
-            bot.send_friend_msg(group=msg.sender, msg=[miraicle.Plain(
-                data), miraicle.Image.from_url(res['data'][0]['urls']['original'])], quote=msg.id)
+            
+            data = f'''标题：{res['data'][0]['title']}\nUID: {res['data'][0]['uid']}\n作者: {res['data'][0]['author']}\ntags: {res['data'][0]['tags']}\n'''
+            img = get_img(res['data'][0]['urls']['original'])
+            bot.send_friend_msg(qq=msg.sender, msg=[miraicle.Plain(
+                data), miraicle.Image.from_file(img)])
         else:
-            data = f"标题：{res['data'][0]['title']}\nUID: {res['data'][0]['uid']}\n作者: {res['data'][0]['author']}\ntags: {res['data'][0]['tags']}\n"
-            bot.send_friend_msg(group=msg.sender, msg=[miraicle.Plain(
-                data), miraicle.Image.from_url(res['data'][0]['urls']['original'])], quote=msg.id)
-
-
-
+            data = f'''标题：{res['data'][0]['title']}\nUID: {res['data'][0]['uid']}\n作者: {res['data'][0]['author']}\ntags: {res['data'][0]['tags']}\n'''
+            img = get_img(res['data'][0]['urls']['original'])
+            print(img)
+            bot.send_friend_msg(qq=msg.sender, msg=[miraicle.Plain(
+                data)])
+            bot.send_friend_msg(qq=msg.sender, msg=miraicle.Image.from_file(img))
 
 @miraicle.Mirai.receiver("GroupMessage")
 def setu(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
@@ -68,13 +81,15 @@ def setu(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
             content = {'r18': r18_g[msg.group], 'tag': []}
             res = requests.post(
                 url="https://api.lolicon.app/setu/v2", json=content).json()
-            data = f"标题：{res['data'][0]['title']}\nUID: {res['data'][0]['uid']}\n作者: {res['data'][0]['author']}\ntags: {res['data'][0]['tags']}\n"
+            data = f'''标题：{res['data'][0]['title']}\nUID: {res['data'][0]['uid']}\n作者: {res['data'][0]['author']}\ntags: {res['data'][0]['tags']}\n'''
+            img = get_img(res['data'][0]['urls']['original'])
             bot.send_group_msg(group=msg.group, msg=[miraicle.Plain(
-                    data), miraicle.Image.from_url(res['data'][0]['urls']['original'])], quote=msg.id)
+                    data), miraicle.Image.from_file(img)], quote=msg.id)
         else:
             data = f"标题：{res['data'][0]['title']}\nUID: {res['data'][0]['uid']}\n作者: {res['data'][0]['author']}\ntags: {res['data'][0]['tags']}\n"
+            img = get_img(res['data'][0]['urls']['original'])
             bot.send_group_msg(group=msg.group, msg=[miraicle.Plain(
-                data), miraicle.Image.from_url(res['data'][0]['urls']['original'])], quote=msg.id)
+                data), miraicle.Image.from_file(img)], quote=msg.id)
 
 
 @miraicle.Mirai.receiver("GroupMessage")
