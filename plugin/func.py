@@ -45,15 +45,18 @@ def setu_p(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
             
             data = f'''标题：{res['data'][0]['title']}\nUID: {res['data'][0]['uid']}\n作者: {res['data'][0]['author']}\ntags: {res['data'][0]['tags']}\n'''
             img = get_img(res['data'][0]['urls']['original'])
-            bot.send_friend_msg(qq=msg.sender, msg=[miraicle.Plain(
-                data), miraicle.Image.from_file(img)])
+            bot.send_friend_msg(qq=msg.sender, msg=[miraicle.Plain(data)])
+            msg_id = bot.send_friend_msg(qq=msg.sender, msg=[Mirai.Image.from_file]).get('messageId', 0)
         else:
             data = f'''标题：{res['data'][0]['title']}\nUID: {res['data'][0]['uid']}\n作者: {res['data'][0]['author']}\ntags: {res['data'][0]['tags']}\n'''
             img = get_img(res['data'][0]['urls']['original'])
             print(img)
             bot.send_friend_msg(qq=msg.sender, msg=[miraicle.Plain(
                 data)])
-            bot.send_friend_msg(qq=msg.sender, msg=miraicle.Image.from_file(img))
+            msg_id = bot.send_friend_msg(
+                qq=msg.sender, msg=miraicle.Image.from_file(img)).get('messageId', 0)
+        time.sleep(10)
+        bot.recall(msg_id)
 
 @miraicle.Mirai.receiver("GroupMessage")
 def setu(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
@@ -84,12 +87,20 @@ def setu(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
             data = f'''标题：{res['data'][0]['title']}\nUID: {res['data'][0]['uid']}\n作者: {res['data'][0]['author']}\ntags: {res['data'][0]['tags']}\n'''
             img = get_img(res['data'][0]['urls']['original'])
             bot.send_group_msg(group=msg.group, msg=[miraicle.Plain(
-                    data), miraicle.Image.from_file(img)], quote=msg.id)
+                data)], quote=msg.id)
+            msg_id = bot.send_group_msg(group=msg.group, msg=[
+                miraicle.Image.from_file(img)], quote=msg.id).get('messageId', 0)
         else:
             data = f"标题：{res['data'][0]['title']}\nUID: {res['data'][0]['uid']}\n作者: {res['data'][0]['author']}\ntags: {res['data'][0]['tags']}\n"
             img = get_img(res['data'][0]['urls']['original'])
-            bot.send_group_msg(group=msg.group, msg=[miraicle.Plain(
-                data), miraicle.Image.from_file(img)], quote=msg.id)
+            msg_id = bot.send_group_msg(group=msg.group, msg=[miraicle.Plain(
+                data)], quote=msg.id)
+            msg_id = bot.send_group_msg(group=msg.group, msg=[
+                miraicle.Image.from_file(img)], quote=msg.id).get('messageId', 0)
+        time.sleep(10)
+        bot.recall(msg_id)
+                            
+
 
 
 @miraicle.Mirai.receiver("GroupMessage")

@@ -10,9 +10,7 @@ import miraicle
 def hello_to_group(bot: miraicle.Mirai, msg: miraicle.GroupMessage):
     callback = None
     if msg.text in ['Hello', 'hello']:
-        callback = [miraicle.Plain('Hello world!'),
-                miraicle.Face().from_face_id(74),
-                miraicle.At(qq=msg.sender)]
+        callback = [miraicle.Plain('Hello world!')]
         
     elif msg.plain == '草':
         # 草，图片回复
