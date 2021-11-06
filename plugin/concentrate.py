@@ -51,7 +51,8 @@ def concentrate(bot: miraicle.Mirai, msg):
 def remind(bot: miraicle.Mirai):
     with open("/home/git/bot/Plugin-for-mirai-based-on-miraicle/data/concentrate/today.pkl", 'rb') as f:
         msgsToday = pickle.load(f)
-    bot.send_friend_msg(qq=602198790, msg=[miraicle.Mirai.Plain("Master~ It's 22:00. Have you handled all messages about you? Here's a reminder~")])
+    bot.send_friend_msg(qq=602198790, msg=[miraicle.Plain(
+        "Master~ It's 22:00. Have you handled all messages about you? Here's a reminder~")])
     for i in msgsToday:
         if i.type == 'GroupMessage':
             con = group_str(i)
