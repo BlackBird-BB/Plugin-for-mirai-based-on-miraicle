@@ -5,8 +5,8 @@ import json
 
 from .nudgefunc import get_yiyan, get_dmoe
 
-group_list = [975952062, 679371905]
-friend_list = [602198790, 1320896465, 2446770095, 2363157552]
+group_list = [679371905]
+friend_list = [602198790, 2446770095, 2363157552]
 
 def jinrishici():
     token = "a9QBS+SLL6qZ0uabxPOHZinf3l2VOVDL"
