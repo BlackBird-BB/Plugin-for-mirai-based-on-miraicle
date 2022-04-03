@@ -29,4 +29,4 @@ def blacklist(bot: miraicle.Mirai, msg: miraicle.GroupMessage, flt: miraicle.Bla
         elif msg.plain == '大赦天下':
             flt.clear()
         elif msg.plain == '监狱名单':
-            bot.send_group_msg(group=msg.group, msg=str(plt.show()), quote=msg.id)
+            bot.send_group_msg(group=msg.group, msg=str(flt.show()), quote=msg.id)

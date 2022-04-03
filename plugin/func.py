@@ -9,7 +9,7 @@ r18_g = {}
 r18_p = {}
 
 def get_img(url):
-    name = "/home/git/bot/Plugin-for-mirai-based-on-miraicle/data/setu/" + \
+    name = "data/setu/" + \
         str(time.time()).replace(".", "_")+".jpg"
     os.system(
         f'''proxychains curl {url} --output {name}''')
